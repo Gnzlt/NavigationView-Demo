@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">NavigationView Demo</string>
+    <string name="title_activity_fab">Fab Activity</string>
+
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
+    <string name="settings">Settings</string>
+    <string name="alert_text">Enter some text</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="action_show">Show</string>
+
+    <string name="snackbar_text">Snackbar Text</string>
+    <string name="some_text">Some Text</string>
+    <string name="loremipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce lacus nisl, venenatis accumsan fermentum sed, auctor ut magna. Integer ante erat, fermentum id feugiat quis, tristique eu tortor. Cras vel sodales diam, ut imperdiet urna. Proin et nisl vitae ante scelerisque commodo ornare vel tortor. In eget viverra nisl, eu pellentesque nisi. Donec molestie metus sed mauris sagittis, sed vestibulum ante rhoncus. Aenean vel neque id magna pretium viverra. Phasellus pellentesque faucibus urna, lacinia scelerisque sem condimentum ut. Praesent at arcu eu orci fringilla vehicula eu at ante. Nullam congue felis massa, at vehicula mauris efficitur egestas. In feugiat mi at orci ultricies porttitor. Mauris fermentum nunc dui, ut tincidunt libero cursus pretium. Quisque eu vestibulum sapien. Donec non tempus ex. Donec in accumsan elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam facilisis maximus enim eget sagittis. Vestibulum tincidunt dolor sit amet interdum porta. Fusce eu odio sem. Proin non condimentum elit. Curabitur elit turpis, hendrerit eget velit et, sagittis pellentesque felis. Donec in euismod nibh. </string>
+</resources>

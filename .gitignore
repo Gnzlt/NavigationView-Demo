@@ -29,6 +29,7 @@ proguard/
 
 ### Android Patch ###
 gen-external-apklibs
+proguard-rules.pro
 
 
 ### Intellij ###

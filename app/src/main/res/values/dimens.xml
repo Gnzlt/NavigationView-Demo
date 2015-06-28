@@ -1,0 +1,22 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="card_horizontal_margin">16dp</dimen>
+    <dimen name="card_vertical_margin">16dp</dimen>
+
+    <dimen name="elevation_toolbar">4dp</dimen>
+    <dimen name="elevation_tabs">4dp</dimen>
+    <dimen name="elevation_fab">8dp</dimen>
+
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="status_bar_height">25dp</dimen>
+    <dimen name="header_layout_height">172dp</dimen>
+    <dimen name="avatar_size">64dp</dimen>
+
+    <dimen name="title_start_margin">48dp</dimen>
+    <dimen name="title_end_margin">64dp</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="scrollview_margin">24dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
