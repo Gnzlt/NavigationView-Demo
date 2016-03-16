@@ -13,11 +13,13 @@ import com.gnzlt.navigationview.R;
 
 @SuppressLint("ValidFragment")
 public class FavoriteTabFragment extends Fragment {
-
     private int mPosition;
 
     public FavoriteTabFragment(int position) {
         mPosition = position;
+    }
+
+    public FavoriteTabFragment() {
     }
 
     @Nullable

@@ -1,5 +1,6 @@
 package com.gnzlt.navigationview;
 
+import android.annotation.TargetApi;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,10 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.gnzlt.navigationview.fragments.FavoritesFragment;
 import com.gnzlt.navigationview.fragments.HomeFragment;
@@ -26,38 +26,36 @@ import com.gnzlt.navigationview.fragments.SettingsFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    DrawerLayout drawerLayout;
-    Toolbar toolbar = null;
     ActionBarDrawerToggle drawerToggle;
+    DrawerLayout drawerLayout;
+    Toolbar toolbar;
 
     FragmentManager fragmentManager;
+    NavigationView navigationView;
+    FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupToolbar();
-        setupDrawerLayout();
-        setupInit();
+        fragmentManager = getSupportFragmentManager();
+
+        setupView();
+        if (savedInstanceState == null) showHome();
     }
 
-    private void setupToolbar() {
+    private void setupView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
+        frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
-    private void setupDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -65,22 +63,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.setDrawerListener(drawerToggle);
     }
 
-    private void setupInit() {
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
-
+    private void showHome() {
+        selectDrawerItem(navigationView.getMenu().getItem(0));
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
     private void selectDrawerItem(MenuItem menuItem) {
-        Fragment fragment = null;
+        boolean specialToolbarBehaviour = false;
         Class fragmentClass;
-        Float elevation = getResources().getDimension(R.dimen.elevation_toolbar);
 
         switch (menuItem.getItemId()) {
             case R.id.drawer_home:
@@ -88,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.drawer_favorites:
                 fragmentClass = FavoritesFragment.class;
-                elevation = 0.0f;
+                specialToolbarBehaviour = true;
                 break;
             case R.id.drawer_settings:
                 fragmentClass = SettingsFragment.class;
@@ -100,27 +92,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            Fragment fragment = (Fragment) fragmentClass.newInstance();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.content_frame, fragment);
-        fragmentTransaction.addToBackStack("FRAGMENT");
-        fragmentTransaction.commit();
-
+        setToolbarElevation(specialToolbarBehaviour);
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            toolbar.setElevation(elevation);
-
         drawerLayout.closeDrawers();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setToolbarElevation(boolean specialToolbarBehaviour) {
+        if (specialToolbarBehaviour) {
+            toolbar.setElevation(0.0f);
+            frameLayout.setElevation(getResources().getDimension(R.dimen.elevation_toolbar));
+        } else {
+            toolbar.setElevation(getResources().getDimension(R.dimen.elevation_toolbar));
+            frameLayout.setElevation(0.0f);
+        }
     }
 
     public void showSnackbarMessage(View v) {
@@ -150,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override
